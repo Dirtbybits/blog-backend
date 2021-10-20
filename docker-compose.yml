@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    container_name: web
+    command: "python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=web_db
+      - DB_NAME=web
+      - DB_USER=server
+      - DB_PASSWORD=server
+    depends_on:
+      - web_db
+  web_db:
+    image: postgres
+    container_name: web_db
+    environment:
+      - POSTGRES_DB=web
+      - POSTGRES_USER=server
+      - POSTGRES_PASSWORD=server
+    ports:
+      - "5432:5432"
